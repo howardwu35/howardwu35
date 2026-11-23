@@ -1,60 +1,73 @@
 # 01 · Lab Setup
 
-## Hardware / Software
+The documented lab uses **one Windows VM** as the target, scanned by **Nessus Essentials**. Everything shown in screenshots in this repo comes from that setup. An optional Linux target (Metasploitable 2) is described at the end for anyone who wants more findings.
+
+## Components
 | Item | Notes |
 |---|---|
 | Hypervisor | VirtualBox 7.x or VMware Workstation Player (free) |
-| Host RAM | 16 GB recommended (Nessus 4 GB + targets 1–4 GB each) |
-| Scanner VM | Kali Linux or Ubuntu 22.04+, 2 vCPU, 4–8 GB RAM, 40 GB disk |
-| Target 1 | **Metasploitable 2** (Rapid7, distributed via SourceForge), 512 MB–1 GB RAM |
-| Target 2 | **Windows 10/11 Enterprise Evaluation** (Microsoft Evaluation Center, 90-day) |
+| Scanner | Nessus Essentials (free, up to 16 IPs), on the host OS or a Kali/Ubuntu VM (4–8 GB RAM) |
+| Target | **Windows 10/11 VM** (Microsoft Evaluation Center ISOs work), 2 vCPU, 4 GB RAM |
 
-## 1. Network Isolation (do this first)
-Metasploitable is intentionally compromised-by-design. **It must never touch the internet or your home LAN.**
+## 1. Network
+Put the Windows VM on a **Host-only** (VirtualBox) or **Host-only / custom VMnet** (VMware) network so the scanner can reach it and scans stay off your home LAN.
 
-1. VirtualBox → *File → Tools → Network Manager → Host-only Networks* → create `vboxnet0`, `192.168.56.1/24`, DHCP enabled.
-2. Metasploitable & Windows: **Adapter 1 = Host-only only.**
-3. Scanner VM: Adapter 1 = NAT (for plugin updates), Adapter 2 = Host-only.
-4. Verify from the scanner: `ip a` shows a `192.168.56.x` address; `ping 192.168.56.101` works.
+1. Create a host-only network (VirtualBox: *File → Tools → Network Manager*), e.g. `192.168.56.0/24`.
+2. Windows VM: attach an adapter to the host-only network. A second NAT adapter is fine if you need Windows Update for the remediation phase.
+3. Give the VM a static IP or DHCP reservation so it keeps the **same IP for the baseline and the rescan**. The diff tool matches findings on IP + plugin + port.
+4. From the scanner, confirm reachability: `ping <windows-ip>` (allow ICMP in the Windows firewall if needed).
 
-| Host | IP (example) | Credentials |
-|---|---|---|
-| Scanner | 192.168.56.10 | your own |
-| Metasploitable 2 | 192.168.56.101 | `msfadmin` / `msfadmin` |
-| Windows Eval | 192.168.56.102 | local admin you create (e.g. `labadmin`) |
+📸 `screenshots/01-vm-network-settings.png`: VM network adapter settings
+📸 `screenshots/02-windows-ipconfig.png`: `ipconfig` on the Windows VM
 
-> Tip: set static IPs or DHCP reservations so IPs stay the same between baseline and rescan. The diff tool matches findings on IP + plugin + port.
+## 2. Prepare the Windows Target
+### Make it worth scanning (so there is something to find and fix)
+A fully patched Windows 11 VM produces very few findings. To create realistic, fixable weaknesses:
+- **Pause Windows Update** before the baseline scan.
+- **Install a few outdated applications** (older versions of e.g. 7-Zip, VLC, Notepad++, Firefox, Java, or Adobe Reader). Credentialed scans detect vulnerable app versions. This is the most common real-world finding type.
+- **Enable SMBv1** (*Turn Windows features on or off → SMB 1.0/CIFS File Sharing Support*).
+- **Enable Remote Desktop** and untick *Require devices to use Network Level Authentication*.
 
-## 2. Windows Target Prep
-- During install, create a local admin account (`labadmin`).
-- **Pause Windows Update** before the baseline scan so there are findings to remediate.
-- For **credentialed** scanning (local account, not domain-joined):
-  - Network profile: Private. Enable **File and Printer Sharing** through Windows Defender Firewall.
-  - Start and set to Automatic: **Remote Registry** service.
-  - Allow local admins to use admin shares remotely (UAC remote restrictions):
-    ```powershell
-    reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
-    ```
-  - Confirm from the scanner: `smbclient -L //192.168.56.102 -U labadmin`
-- Optional (for more findings): enable SMBv1 (`Turn Windows features on or off → SMB 1.0/CIFS`) and RDP.
+Record what you changed. These become your POA&M items and your remediation change log.
 
-> Document every hardening change you make *for scanning* (Remote Registry, LocalAccountTokenFilterPolicy). In production these are change-controlled decisions, and in a real environment you would use a domain service account instead.
-
-## 3. Install Nessus Essentials (scanner VM)
-1. Register for an activation code: tenable.com → Nessus Essentials (free, up to 16 IPs).
-2. Download the `.deb` for your distro, then:
-   ```bash
-   sudo dpkg -i Nessus-*-debian10_amd64.deb      # or the ubuntu package
-   sudo systemctl enable --now nessusd
+### Enable credentialed scanning (local admin account)
+1. Create a local admin account for scanning, e.g. `nessus-scan`. Don't reuse your personal account.
+2. Set the network profile to **Private** and allow **File and Printer Sharing** in Windows Defender Firewall.
+3. Start the **Remote Registry** service and set it to Automatic:
+   ```powershell
+   Set-Service RemoteRegistry -StartupType Automatic; Start-Service RemoteRegistry
    ```
-3. Browse to `https://<scanner-ip>:8834`, accept the self-signed cert, choose **Nessus Essentials**, enter the activation code, create the admin user.
-4. Wait for plugins to download and compile (this can take 30–60+ minutes).
-5. Record the Nessus version and plugin feed version in your report (*Settings → About*). Reports should always state which feed was used.
+4. Allow local admin accounts to use admin shares remotely (needed for non-domain local accounts):
+   ```powershell
+   reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
+   ```
+5. Test from the scanner (Linux): `smbclient -L //<windows-ip> -U nessus-scan`
 
-## 4. Snapshot Everything
-Take a snapshot of each target named `baseline-vulnerable` **before** scanning. You can then repeat the remediate → rescan cycle and roll back.
+📸 `screenshots/03-windows-scan-prep.png`: Remote Registry running / firewall rule
 
-## Evidence to Capture
-- [ ] VirtualBox network settings showing Host-only on targets
-- [ ] Nessus *About* page (version + plugin set)
-- [ ] `ip a` on scanner showing host-only interface
+> These settings weaken the host and exist only for scanning. In an enterprise, a **domain service account** pushed by GPO is used instead, and the account is protected as a privileged credential (RA-5(5)).
+
+## 3. Install Nessus Essentials
+1. Register for an activation code at tenable.com → *Nessus Essentials*.
+2. Install:
+   - **Windows host:** run the `.msi` installer.
+   - **Kali/Ubuntu:** `sudo dpkg -i Nessus-*.deb && sudo systemctl enable --now nessusd`
+3. Browse to `https://localhost:8834` (or `https://<scanner-ip>:8834`), choose **Nessus Essentials**, enter the code, create the admin user.
+4. Wait for plugins to download and compile (30–60+ minutes).
+5. Note the Nessus version and plugin feed version (*Settings → About*) for your report.
+
+📸 `screenshots/04-nessus-about.png`: version + plugin set (**blur the activation code**)
+
+## 4. Snapshot
+Snapshot the Windows VM as `baseline-vulnerable` before scanning, so you can repeat the cycle.
+
+---
+
+## Optional: Add a Linux Target (Metasploitable 2)
+*Not part of the documented results. Instructions for anyone extending the lab.*
+
+1. Download Metasploitable 2 (Rapid7, via SourceForge) and import the VMDK.
+2. **Host-only adapter ONLY.** It is intentionally backdoored and must never reach the internet or your LAN.
+3. Login `msfadmin` / `msfadmin`. Note its IP with `ifconfig`.
+4. Add it to the scan targets and add **SSH credentials** (`msfadmin`, elevate with `sudo`) to the credentialed policy (see [02](02-scan-policies.md)).
+5. Expect dozens of Critical/High findings (backdoored vsftpd and UnrealIRCd, bind shell on 1524, weak VNC password, rexec/rlogin, NFS exports). Remediation steps are in [05](05-remediation-and-validation.md#optional-metasploitable-2).

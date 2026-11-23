@@ -1,37 +1,31 @@
 # 05 · Remediation & Validation
 
-Remediation is not done until a **rescan proves it**. This closes the loop: POA&M item → change → validation scan → close or escalate.
+Remediation is not done until a **rescan proves it**: POA&M item → change → validation scan → close or escalate.
 
-## Remediation Playbook (lab targets)
-Fix the top-priority items from your POA&M. Commands are starting points: **verify on your system**, and record what you actually ran.
+## Windows Remediation Playbook
+Work from your POA&M, highest contextual risk first. Run PowerShell as administrator.
 
-### Metasploitable 2 (192.168.56.101)
-| Finding | Remediation | Verify |
+| Finding type | Remediation | Verify |
 |---|---|---|
-| Bind shell on 1524 (ingreslock) | Comment out the `ingreslock` line in `/etc/inetd.conf`, restart inetd | `sudo netstat -tlnp \| grep 1524` returns nothing |
-| rexec / rlogin / rsh (512–514) | Comment out `exec`, `login`, `shell` in `/etc/inetd.conf`, restart inetd | `nmap -p512-514 192.168.56.101` |
-| UnrealIRCd backdoor (6667) | Identify process (`sudo netstat -tlnp \| grep 6667`), stop it and disable its startup | port closed |
-| VNC weak password (5900) | Set a strong password with `vncpasswd`, or disable VNC | Nessus plugin no longer fires |
-| NFS world-readable | Restrict `/etc/exports` to specific hosts / `ro,root_squash`, then `sudo exportfs -ra` | `showmount -e 192.168.56.101` |
-| Telnet (23) | Disable `telnet` in inetd; use SSH | port closed |
+| Missing Windows cumulative / security updates | Resume Windows Update, install all, reboot | `Get-HotFix \| Sort InstalledOn -Desc \| Select -First 5` |
+| Outdated third-party apps (7-Zip, VLC, browsers, Java…) | Update to current version or uninstall if not needed | Version in *Apps & features* |
+| SMBv1 enabled | `Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol` (reboot) | `Get-WindowsOptionalFeature -Online -FeatureName SMB1Protocol` |
+| SMB signing not required | `Set-SmbServerConfiguration -RequireSecuritySignature $true -Force` | `Get-SmbServerConfiguration \| Select RequireSecuritySignature` |
+| RDP without NLA | *System → Remote Desktop → Require Network Level Authentication* | Plugin 58453 no longer fires |
+| RDP not needed at all | Disable Remote Desktop | Port 3389 closed |
 
-### Windows Eval (192.168.56.102)
-| Finding | Remediation (PowerShell as admin) |
-|---|---|
-| Missing cumulative updates / MS17-010 | Resume Windows Update and install all updates; reboot |
-| SMBv1 enabled | `Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol` |
-| SMB signing not required | `Set-SmbServerConfiguration -RequireSecuritySignature $true -Force` |
-| RDP without NLA | System Properties → Remote → *Allow connections only from computers running Remote Desktop with Network Level Authentication* |
+📸 `screenshots/12-remediation-commands.png`: PowerShell fixes
+📸 `screenshots/13-windows-update-complete.png`: updates installed
 
-> In production, each change goes through change management (ticket, approval, maintenance window, rollback plan). Log yours in the table below as if it were a change record.
+> In production every change goes through change management: ticket, approval, maintenance window, rollback plan. Log yours below as if it were a change record.
 
 ## Change Log
-| Date | POA&M ID | Host | Change made | Result |
-|---|---|---|---|---|
-| | | | | |
+| Date | POA&M ID | Change made | Result |
+|---|---|---|---|
+| | | | |
 
 ## Validation Rescan
-1. Re-run the **same credentialed policy** against the same IPs. Policy consistency matters, or the diff isn't apples to apples.
+1. Re-run the **same credentialed policy** against the same IP. Same policy, same scope, or the comparison isn't valid.
 2. Export to `scans/rescan-credentialed.nessus`.
 3. Generate the validation report:
    ```bash
@@ -39,7 +33,22 @@ Fix the top-priority items from your POA&M. Commands are starting points: **veri
        scans/rescan-credentialed.nessus -o reports/validation \
        --assets assets.example.csv --kev known_exploited_vulnerabilities.csv
    ```
-4. Update POA&M status: **Remediated** findings → *Closed* (with rescan date as evidence). **Persisting** findings → investigate (fix failed? reboot pending?). **New** findings → triage as new POA&M items. Patching can introduce or reveal new issues.
+4. Update POA&M status. **Remediated** → *Closed* with the rescan date as evidence. **Persisting** → investigate (failed patch? pending reboot?). **New** → triage as new items.
+
+📸 `screenshots/14-rescan-summary.png`: rescan severity breakdown
 
 ## Results
-> Paste the summary table from `reports/validation/remediation_validation.md` here and state the % reduction in Critical/High findings.
+> Paste the summary table from `reports/validation/remediation_validation.md` and state the % reduction in Critical/High findings.
+
+---
+
+## Optional: Metasploitable 2
+*Instructions for extending the lab. Not part of the documented results.* Verify each on your system.
+
+| Finding | Remediation | Verify |
+|---|---|---|
+| Bind shell on 1524 (ingreslock) | Comment out `ingreslock` in `/etc/inetd.conf`, restart inetd | `sudo netstat -tlnp \| grep 1524` empty |
+| rexec / rlogin / rsh (512–514), telnet | Comment out `exec`, `login`, `shell`, `telnet` in `/etc/inetd.conf`, restart inetd | `nmap -p23,512-514 <ip>` |
+| UnrealIRCd backdoor (6667) | Find process (`sudo netstat -tlnp \| grep 6667`), stop it and disable its startup | port closed |
+| VNC weak password (5900) | `vncpasswd` with a strong password, or disable VNC | plugin no longer fires |
+| NFS world-readable | Restrict `/etc/exports`, `sudo exportfs -ra` | `showmount -e <ip>` |

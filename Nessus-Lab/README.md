@@ -15,29 +15,29 @@ This lab is about how a **Cyber Risk Analyst** works: running a scanner is the e
 
 ```mermaid
 flowchart LR
-    subgraph HostOnly["Host-only network 192.168.56.0/24 (no internet)"]
-        K["Kali / Ubuntu<br/>Nessus Essentials<br/>192.168.56.10"]
-        M["Metasploitable 2<br/>Linux target<br/>192.168.56.101"]
-        W["Windows 10/11 Eval<br/>unpatched target<br/>192.168.56.102"]
+    subgraph HostOnly["Host-only lab network"]
+        N["Nessus Essentials<br/>scanner"]
+        W["Windows VM<br/>target"]
+        M["Metasploitable 2<br/>(optional)"]
     end
-    K -- "Uncredentialed scan" --> M
-    K -- "Credentialed scan (SSH)" --> M
-    K -- "Credentialed scan (SMB)" --> W
-    K --> P["nessus_report.py<br/>findings.csv · poam.csv · report.md"]
+    N -- "Uncredentialed scan" --> W
+    N -- "Credentialed scan (SMB, local admin)" --> W
+    N -. "optional" .-> M
+    N --> P["nessus_report.py<br/>findings.csv · poam.csv · report.md"]
 ```
 
 | Component | Role |
 |---|---|
 | Nessus Essentials (free, 16 IPs) | Vulnerability scanner |
-| Metasploitable 2 | Deliberately vulnerable Linux target |
-| Windows 10/11 Enterprise Evaluation | Unpatched Windows endpoint |
-| `scripts/nessus_report.py` | Parses `.nessus` exports into risk-scored findings, a POA&M and reports |
+| **Windows VM** | Documented target: deliberately left unpatched with outdated apps, SMBv1, and RDP without NLA |
+| Metasploitable 2 *(optional)* | Extra Linux target. Setup instructions included for anyone extending the lab |
+| `scripts/nessus_report.py` | Parses `.nessus` exports into risk-scored findings, a POA&M, and reports |
 
 ## Vulnerability Management Lifecycle
 
 | Phase | What I did | Artifact |
 |---|---|---|
-| 1. Asset inventory | Defined in-scope assets, owners, and criticality | [`assets.example.csv`](assets.example.csv) |
+| 1. Asset inventory | Defined in-scope asset, owners, and criticality | [`assets.example.csv`](assets.example.csv) |
 | 2. Discovery | Host discovery scan to confirm live hosts | [docs/02](docs/02-scan-policies.md) |
 | 3. Assessment | Uncredentialed vs. credentialed Basic Network Scans | [docs/03](docs/03-scan-execution.md) |
 | 4. Analysis & prioritization | Validated findings, removed false positives, scored by contextual risk (CVSS/VPR + asset criticality + exploitability + CISA KEV) | [docs/04](docs/04-risk-analysis-methodology.md) |
@@ -45,9 +45,9 @@ flowchart LR
 | 6. Tracking | POA&M with NIST 800-53 controls, owners, SLA due dates | `poam.csv` |
 | 7. Remediation & validation | Fixed top findings, rescanned, measured risk reduction | [docs/05](docs/05-remediation-and-validation.md) |
 
-## Results
+## Results (Windows VM)
 
-> 📌 **Fill this in from your own scans** (see `scans/` and `reports/`). The numbers below are placeholders until the lab is run.
+> 📌 Filled in from my own scans (`scans/`, `reports/`).
 
 | Metric | Baseline | After remediation |
 |---|---:|---:|
@@ -55,16 +55,17 @@ flowchart LR
 | High | _TBD_ | _TBD_ |
 | Medium | _TBD_ | _TBD_ |
 | Low | _TBD_ | _TBD_ |
-| Findings: uncredentialed vs. credentialed scan | _TBD_ vs _TBD_ | n/a |
+| Findings: uncredentialed vs. credentialed | _TBD_ vs _TBD_ | n/a |
 | Aggregate risk score | _TBD_ | _TBD_ |
 
-**Key takeaways** _(write 3–5 bullets after the lab, e.g. "Credentialed scanning found N× more findings, mostly missing patches invisible from the network")_
+**Key takeaways:** _TBD_
 
-### Screenshots
-<!-- Add screenshots to screenshots/ and reference them here -->
-| Scan summary | Vulnerability detail | Remediation rescan |
+### Evidence
+Full screenshot index: [`screenshots/`](screenshots/). Highlights:
+
+| Credentialed check verified | Baseline scan | After remediation |
 |---|---|---|
-| `screenshots/01-scan-summary.png` | `screenshots/02-vuln-detail.png` | `screenshots/03-rescan.png` |
+| _07-credentialed-checks-yes.png_ | _10-credentialed-summary.png_ | _14-rescan-summary.png_ |
 
 ## Reporting Toolkit (`nessus_report.py`)
 
@@ -117,4 +118,4 @@ Run tests: `python3 -m unittest discover -s tests -v`
 - **CISA BOD 22-01 / KEV catalog**, **CVSS v3.1**, **Tenable VPR**
 
 ## ⚠️ Ethics & Scope
-All scanning was done against VMs I own, on an isolated host-only network. Never scan systems you are not explicitly authorized to test. Do not commit scans of real organizational networks to a public repository.
+All scanning was done against a VM I own, on an isolated host-only network. Never scan systems you are not explicitly authorized to test. Do not commit scans of real organizational networks to a public repository.

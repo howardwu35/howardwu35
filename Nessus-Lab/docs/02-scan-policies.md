@@ -1,50 +1,57 @@
 # 02 · Scan Policies
 
-I used three scan configurations, mirroring how an enterprise program layers discovery, unauthenticated, and authenticated assessment.
+Three configurations, mirroring how an enterprise program layers discovery, unauthenticated, and authenticated assessment. All are available in **Nessus Essentials**.
 
 | # | Template | Purpose | Credentials |
 |---|---|---|---|
-| 1 | **Host Discovery** | Confirm live hosts / build inventory (validate asset list) | None |
-| 2 | **Basic Network Scan, uncredentialed** | Attacker's-eye view: exposed services, network-reachable vulns | None |
-| 3 | **Basic Network Scan, credentialed** | Patch-level and configuration view: missing updates, local vulns | SSH (Linux), SMB/Windows (Windows) |
+| 1 | **Host Discovery** | Confirm the target is live; validate the asset inventory | None |
+| 2 | **Basic Network Scan, uncredentialed** | Attacker's-eye view: exposed services and network-reachable vulns | None |
+| 3 | **Basic Network Scan, credentialed** | Patch and configuration view: missing updates, outdated apps, local settings | Windows (SMB) |
 
 ## Policy 1: Host Discovery
-- *New Scan → Host Discovery*, Targets: `192.168.56.0/24`
-- Discovery type: *Port scan (common ports)*
-- Output: live host list; reconcile with `assets.example.csv`. **Unknown hosts are a finding** (CM-8, System Component Inventory).
+- *New Scan → Host Discovery*, Targets: your host-only subnet (e.g. `192.168.56.0/24`)
+- Output: live host list. Reconcile with `assets.example.csv`. **Unknown hosts are a finding** (CM-8).
+
+📸 `screenshots/05-host-discovery.png`
 
 ## Policy 2: Basic Network Scan (uncredentialed)
-- Targets: `192.168.56.101, 192.168.56.102`
-- *Discovery → Port Scanning*: consider **All ports (1-65535)**. Metasploitable has services on high ports (e.g. 1524, 6667) that a default port list may miss.
-- *Assessment*: default
-- Name: `LAB-Baseline-Uncredentialed-YYYYMMDD`
+- Targets: `<windows-ip>`
+- *Discovery → Port Scanning*: default is fine for Windows. Use **all ports** if adding Metasploitable.
+- Name: `LAB-Win-Uncredentialed-YYYYMMDD`
 
 ## Policy 3: Basic Network Scan (credentialed)
-Same settings as Policy 2, plus *Credentials*:
+Same as Policy 2, plus *Credentials → Host → Windows*:
+- Authentication method: **Password**
+- Username: `nessus-scan`, Password: ‹yours›, Domain: blank (local account)
+- Name: `LAB-Win-Credentialed-YYYYMMDD`
 
-**SSH (Metasploitable)**
-- Authentication method: password, Username `msfadmin`
-- Elevate privileges with: `sudo` (password `msfadmin`)
+📸 `screenshots/06-credential-config.png`: Credentials tab (**password field hidden**)
 
-**Windows (Win Eval)**
-- Authentication method: Password, Username `labadmin`, Domain blank (local account)
+### Verify the credentials actually worked
+A credentialed scan whose login failed silently is just an uncredentialed scan. Check:
 
-Name: `LAB-Baseline-Credentialed-YYYYMMDD`
-
-### Verifying credentials actually worked
-A "credentialed" scan whose login failed silently becomes an uncredentialed scan. Check these plugin results:
-
-| Plugin | Meaning |
+| Plugin | What to look for |
 |---|---|
-| 19506 *Nessus Scan Information* | Output shows `Credentialed checks : yes` |
+| 19506 *Nessus Scan Information* | `Credentialed checks : yes` |
 | 141118 *Target Credential Status by Authentication Protocol - Valid Credentials Provided* | Login succeeded |
-| 21745 *OS Security Patch Assessment Failed* / 104410 *Target Credential Status by Authentication Protocol - Failure for Provided Credentials* | Login or privilege problem: fix before trusting results |
+| 104410 *…Failure for Provided Credentials* / 21745 *OS Security Patch Assessment Failed* | Fix before trusting results (see troubleshooting) |
 
-> Plugin IDs can change between feeds. Search the plugin name in the scan results if an ID doesn't match.
+📸 `screenshots/07-credentialed-checks-yes.png`: plugin 19506 output
 
-## Compliance Scanning (note)
-Configuration audits against **CIS Benchmarks** or **DISA STIGs** (*Policy Compliance Auditing* templates and `.audit` files) are **not available in Nessus Essentials**. They require Nessus Professional/Expert or Tenable Security Center. In DoD environments this is done through **ACAS** (Tenable Security Center + Nessus) together with **DISA STIG / SCAP** benchmarks. Free alternative for practice: DISA **SCAP Compliance Checker (SCC)** + **STIG Viewer** on the Windows VM.
+> Plugin IDs can change between feeds. Search by name if an ID doesn't match.
 
-## Evidence to Capture
-- [ ] Screenshot of each policy's settings (Discovery + Credentials tabs)
-- [ ] Plugin 19506 output showing `Credentialed checks : yes`
+### Troubleshooting failed Windows logins
+| Symptom | Fix |
+|---|---|
+| Can't connect to 445 | Firewall: enable File and Printer Sharing (SMB-In); profile set to Private |
+| Login OK but "local checks not run" | `LocalAccountTokenFilterPolicy = 1`; account is in Administrators |
+| Registry access denied | Start the Remote Registry service |
+| Microsoft account used | Use a *local* account. Microsoft-account logins often fail over SMB |
+
+## Not available in Essentials: Compliance Scans
+CIS/DISA STIG configuration audits (*Policy Compliance Auditing*, `.audit` files) need Nessus Professional/Expert or Tenable Security Center. In DoD, **ACAS** (Security Center + Nessus) runs these. Free alternative on the Windows VM: DISA **SCAP Compliance Checker (SCC)** + **STIG Viewer**.
+
+---
+
+### Optional: Metasploitable 2 credentials
+Add *Credentials → Host → SSH*: password auth, user `msfadmin`, **Elevate privileges with: sudo** (password `msfadmin`), and add its IP to the targets.
