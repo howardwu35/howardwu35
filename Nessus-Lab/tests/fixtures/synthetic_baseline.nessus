@@ -1,0 +1,174 @@
+<?xml version="1.0" ?>
+<!-- SYNTHETIC TEST FIXTURE - NOT A REAL SCAN -->
+<NessusClientData_v2>
+<Report name="SYNTHETIC-Baseline">
+<ReportHost name="192.168.56.101"><HostProperties>
+<tag name="HOST_START">Mon Nov 16 10:00:00 2026</tag>
+<tag name="host-ip">192.168.56.101</tag>
+<tag name="host-fqdn">metasploitable.lab.local</tag>
+<tag name="operating-system">Linux Kernel 2.6 on Ubuntu 8.04 (hardy)</tag>
+<tag name="Credentialed_Scan">false</tag>
+</HostProperties>
+<ReportItem port="0" svc_name="general" protocol="tcp" severity="0" pluginID="19506" pluginName="Nessus Scan Information" pluginFamily="Settings"><plugin_output>SYNTHETIC</plugin_output></ReportItem>
+<ReportItem port="1524" svc_name="wild_shell" protocol="tcp" severity="4" pluginID="51988" pluginName="Bind Shell Backdoor Detection" pluginFamily="Backdoors">
+<risk_factor>Critical</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - Bind Shell Backdoor Detection detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for Bind Shell Backdoor Detection.</description>
+<solution>Verify if the remote host has been compromised, and reinstall the system if necessary.</solution>
+<cvss3_base_score>9.8</cvss3_base_score>
+<exploit_available>true</exploit_available>
+<exploit_framework_metasploit>true</exploit_framework_metasploit>
+<plugin_output>SYNTHETIC: example plugin output for 51988 on port 1524/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="6667" svc_name="irc" protocol="tcp" severity="4" pluginID="46882" pluginName="UnrealIRCd Backdoor Detection" pluginFamily="Backdoors">
+<risk_factor>Critical</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - UnrealIRCd Backdoor Detection detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for UnrealIRCd Backdoor Detection.</description>
+<solution>Re-download the software, verify it using the published MD5 / SHA1 checksums, and re-install it.</solution>
+<cvss3_base_score>9.8</cvss3_base_score>
+<vpr_score>7.4</vpr_score>
+<cve>CVE-2010-2075</cve>
+<exploit_available>true</exploit_available>
+<exploit_framework_metasploit>true</exploit_framework_metasploit>
+<plugin_output>SYNTHETIC: example plugin output for 46882 on port 6667/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="21" svc_name="ftp" protocol="tcp" severity="4" pluginID="55523" pluginName="vsftpd Smiley Face Backdoor" pluginFamily="FTP">
+<risk_factor>Critical</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - vsftpd Smiley Face Backdoor detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for vsftpd Smiley Face Backdoor.</description>
+<solution>Validate and recompile a legitimate copy of the source code.</solution>
+<cvss3_base_score>9.8</cvss3_base_score>
+<vpr_score>7.4</vpr_score>
+<cve>CVE-2011-2523</cve>
+<exploit_available>true</exploit_available>
+<exploit_framework_metasploit>true</exploit_framework_metasploit>
+<plugin_output>SYNTHETIC: example plugin output for 55523 on port 21/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="22" svc_name="ssh" protocol="tcp" severity="4" pluginID="32314" pluginName="Debian OpenSSH/OpenSSL Package Random Number Generator Weakness" pluginFamily="Gain a shell remotely">
+<risk_factor>Critical</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - Debian OpenSSH/OpenSSL Package Random Number Generator Weakness detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for Debian OpenSSH/OpenSSL Package Random Number Generator Weakness.</description>
+<solution>Consider all cryptographic material generated on the remote host to be guessable. Regenerate all SSH, SSL and OpenVPN key material.</solution>
+<cvss3_base_score>9.8</cvss3_base_score>
+<vpr_score>5.1</vpr_score>
+<cve>CVE-2008-0166</cve>
+<exploit_available>true</exploit_available>
+<exploit_framework_metasploit>true</exploit_framework_metasploit>
+<plugin_output>SYNTHETIC: example plugin output for 32314 on port 22/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="5900" svc_name="vnc" protocol="tcp" severity="4" pluginID="61708" pluginName="VNC Server 'password' Password" pluginFamily="Gain a shell remotely">
+<risk_factor>Critical</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - VNC Server 'password' Password detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for VNC Server 'password' Password.</description>
+<solution>Secure the VNC service with a strong password.</solution>
+<cvss3_base_score>10.0</cvss3_base_score>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 61708 on port 5900/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="2049" svc_name="rpc-nfs" protocol="udp" severity="3" pluginID="42256" pluginName="NFS Shares World Readable" pluginFamily="RPC">
+<risk_factor>High</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - NFS Shares World Readable detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for NFS Shares World Readable.</description>
+<solution>Place the appropriate restrictions on all NFS shares.</solution>
+<cvss3_base_score>7.5</cvss3_base_score>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 42256 on port 2049/udp</plugin_output>
+</ReportItem>
+<ReportItem port="512" svc_name="rexecd" protocol="tcp" severity="3" pluginID="10203" pluginName="rexecd Service Detection" pluginFamily="Service detection">
+<risk_factor>High</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - rexecd Service Detection detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for rexecd Service Detection.</description>
+<solution>Comment out the 'exec' line in /etc/inetd.conf and restart the inetd process.</solution>
+<cvss3_base_score>7.5</cvss3_base_score>
+<cve>CVE-1999-0618</cve>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 10203 on port 512/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="445" svc_name="cifs" protocol="tcp" severity="2" pluginID="90509" pluginName="Samba Badlock Vulnerability" pluginFamily="General">
+<risk_factor>Medium</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - Samba Badlock Vulnerability detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for Samba Badlock Vulnerability.</description>
+<solution>Upgrade to Samba version 4.2.11 / 4.3.8 / 4.4.2 or later.</solution>
+<cvss3_base_score>5.9</cvss3_base_score>
+<vpr_score>6.7</vpr_score>
+<cve>CVE-2016-2118</cve>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 90509 on port 445/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="25" svc_name="smtp" protocol="tcp" severity="3" pluginID="20007" pluginName="SSL Version 2 and 3 Protocol Detection" pluginFamily="Service detection">
+<risk_factor>High</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - SSL Version 2 and 3 Protocol Detection detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for SSL Version 2 and 3 Protocol Detection.</description>
+<solution>Consult the application's documentation to disable SSL 2.0 and 3.0. Use TLS 1.2 or later.</solution>
+<cvss3_base_score>7.5</cvss3_base_score>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 20007 on port 25/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="80" svc_name="www" protocol="tcp" severity="2" pluginID="11213" pluginName="HTTP TRACE / TRACK Methods Allowed" pluginFamily="Web Servers">
+<risk_factor>Medium</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - HTTP TRACE / TRACK Methods Allowed detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for HTTP TRACE / TRACK Methods Allowed.</description>
+<solution>Disable these HTTP methods.</solution>
+<cvss3_base_score>5.3</cvss3_base_score>
+<vpr_score>4.0</vpr_score>
+<cve>CVE-2003-1567</cve>
+<cve>CVE-2004-2320</cve>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 11213 on port 80/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="5432" svc_name="postgresql" protocol="tcp" severity="2" pluginID="57582" pluginName="SSL Self-Signed Certificate" pluginFamily="General">
+<risk_factor>Medium</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - SSL Self-Signed Certificate detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for SSL Self-Signed Certificate.</description>
+<solution>Purchase or generate a proper SSL certificate for this service.</solution>
+<cvss3_base_score>6.5</cvss3_base_score>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 57582 on port 5432/tcp</plugin_output>
+</ReportItem>
+</ReportHost>
+<ReportHost name="192.168.56.102"><HostProperties>
+<tag name="HOST_START">Mon Nov 16 10:00:00 2026</tag>
+<tag name="host-ip">192.168.56.102</tag>
+<tag name="host-fqdn">win10-lab.lab.local</tag>
+<tag name="operating-system">Microsoft Windows 10 Enterprise Evaluation Build 14393</tag>
+<tag name="Credentialed_Scan">false</tag>
+</HostProperties>
+<ReportItem port="0" svc_name="general" protocol="tcp" severity="0" pluginID="19506" pluginName="Nessus Scan Information" pluginFamily="Settings"><plugin_output>SYNTHETIC</plugin_output></ReportItem>
+<ReportItem port="445" svc_name="cifs" protocol="tcp" severity="4" pluginID="97833" pluginName="MS17-010: Security Update for Microsoft Windows SMB Server (4013389) (ETERNALBLUE) (ETERNALCHAMPION) (ETERNALROMANCE) (ETERNALSYNERGY) (WannaCry) (EternalRocks) (Petya) (uncredentialed check)" pluginFamily="Windows">
+<risk_factor>Critical</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - MS17-010: Security Update for Microsoft Windows SMB Server (4013389) (ETERNALBLUE) (ETERNALCHAMPION) (ETERNALROMANCE) (ETERNALSYNERGY) (WannaCry) (EternalRocks) (Petya) (uncredentialed check) detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for MS17-010: Security Update for Microsoft Windows SMB Server (4013389) (ETERNALBLUE) (ETERNALCHAMPION) (ETERNALROMANCE) (ETERNALSYNERGY) (WannaCry) (EternalRocks) (Petya) (uncredentialed check).</description>
+<solution>Apply MS17-010. Disable SMBv1 and block TCP 445 at the network perimeter.</solution>
+<cvss3_base_score>8.1</cvss3_base_score>
+<vpr_score>9.7</vpr_score>
+<cve>CVE-2017-0143</cve>
+<cve>CVE-2017-0144</cve>
+<cve>CVE-2017-0145</cve>
+<cve>CVE-2017-0146</cve>
+<cve>CVE-2017-0147</cve>
+<cve>CVE-2017-0148</cve>
+<exploit_available>true</exploit_available>
+<exploit_framework_metasploit>true</exploit_framework_metasploit>
+<plugin_output>SYNTHETIC: example plugin output for 97833 on port 445/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="445" svc_name="cifs" protocol="tcp" severity="2" pluginID="57608" pluginName="SMB Signing not required" pluginFamily="Misc.">
+<risk_factor>Medium</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - SMB Signing not required detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for SMB Signing not required.</description>
+<solution>Enforce message signing in the host's configuration (GPO: 'Microsoft network server: Digitally sign communications (always)').</solution>
+<cvss3_base_score>5.3</cvss3_base_score>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 57608 on port 445/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="3389" svc_name="msrdp" protocol="tcp" severity="2" pluginID="58453" pluginName="Terminal Services Doesn't Use Network Level Authentication (NLA) Only" pluginFamily="Misc.">
+<risk_factor>Medium</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - Terminal Services Doesn't Use Network Level Authentication (NLA) Only detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for Terminal Services Doesn't Use Network Level Authentication (NLA) Only.</description>
+<solution>Enable Network Level Authentication (NLA) on the remote RDP server.</solution>
+<cvss3_base_score>4.0</cvss3_base_score>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 58453 on port 3389/tcp</plugin_output>
+</ReportItem>
+</ReportHost>
+</Report>
+</NessusClientData_v2>

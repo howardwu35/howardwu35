@@ -1,0 +1,102 @@
+<?xml version="1.0" ?>
+<!-- SYNTHETIC TEST FIXTURE - NOT A REAL SCAN -->
+<NessusClientData_v2>
+<Report name="SYNTHETIC-Rescan">
+<ReportHost name="192.168.56.101"><HostProperties>
+<tag name="HOST_START">Mon Nov 23 10:00:00 2026</tag>
+<tag name="host-ip">192.168.56.101</tag>
+<tag name="host-fqdn">metasploitable.lab.local</tag>
+<tag name="operating-system">Linux Kernel 2.6 on Ubuntu 8.04 (hardy)</tag>
+<tag name="Credentialed_Scan">false</tag>
+</HostProperties>
+<ReportItem port="0" svc_name="general" protocol="tcp" severity="0" pluginID="19506" pluginName="Nessus Scan Information" pluginFamily="Settings"><plugin_output>SYNTHETIC</plugin_output></ReportItem>
+<ReportItem port="1524" svc_name="wild_shell" protocol="tcp" severity="4" pluginID="51988" pluginName="Bind Shell Backdoor Detection" pluginFamily="Backdoors">
+<risk_factor>Critical</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - Bind Shell Backdoor Detection detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for Bind Shell Backdoor Detection.</description>
+<solution>Verify if the remote host has been compromised, and reinstall the system if necessary.</solution>
+<cvss3_base_score>9.8</cvss3_base_score>
+<exploit_available>true</exploit_available>
+<exploit_framework_metasploit>true</exploit_framework_metasploit>
+<plugin_output>SYNTHETIC: example plugin output for 51988 on port 1524/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="22" svc_name="ssh" protocol="tcp" severity="4" pluginID="32314" pluginName="Debian OpenSSH/OpenSSL Package Random Number Generator Weakness" pluginFamily="Gain a shell remotely">
+<risk_factor>Critical</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - Debian OpenSSH/OpenSSL Package Random Number Generator Weakness detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for Debian OpenSSH/OpenSSL Package Random Number Generator Weakness.</description>
+<solution>Consider all cryptographic material generated on the remote host to be guessable. Regenerate all SSH, SSL and OpenVPN key material.</solution>
+<cvss3_base_score>9.8</cvss3_base_score>
+<vpr_score>5.1</vpr_score>
+<cve>CVE-2008-0166</cve>
+<exploit_available>true</exploit_available>
+<exploit_framework_metasploit>true</exploit_framework_metasploit>
+<plugin_output>SYNTHETIC: example plugin output for 32314 on port 22/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="2049" svc_name="rpc-nfs" protocol="udp" severity="3" pluginID="42256" pluginName="NFS Shares World Readable" pluginFamily="RPC">
+<risk_factor>High</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - NFS Shares World Readable detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for NFS Shares World Readable.</description>
+<solution>Place the appropriate restrictions on all NFS shares.</solution>
+<cvss3_base_score>7.5</cvss3_base_score>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 42256 on port 2049/udp</plugin_output>
+</ReportItem>
+<ReportItem port="445" svc_name="cifs" protocol="tcp" severity="2" pluginID="90509" pluginName="Samba Badlock Vulnerability" pluginFamily="General">
+<risk_factor>Medium</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - Samba Badlock Vulnerability detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for Samba Badlock Vulnerability.</description>
+<solution>Upgrade to Samba version 4.2.11 / 4.3.8 / 4.4.2 or later.</solution>
+<cvss3_base_score>5.9</cvss3_base_score>
+<vpr_score>6.7</vpr_score>
+<cve>CVE-2016-2118</cve>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 90509 on port 445/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="25" svc_name="smtp" protocol="tcp" severity="3" pluginID="20007" pluginName="SSL Version 2 and 3 Protocol Detection" pluginFamily="Service detection">
+<risk_factor>High</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - SSL Version 2 and 3 Protocol Detection detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for SSL Version 2 and 3 Protocol Detection.</description>
+<solution>Consult the application's documentation to disable SSL 2.0 and 3.0. Use TLS 1.2 or later.</solution>
+<cvss3_base_score>7.5</cvss3_base_score>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 20007 on port 25/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="5432" svc_name="postgresql" protocol="tcp" severity="2" pluginID="57582" pluginName="SSL Self-Signed Certificate" pluginFamily="General">
+<risk_factor>Medium</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - SSL Self-Signed Certificate detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for SSL Self-Signed Certificate.</description>
+<solution>Purchase or generate a proper SSL certificate for this service.</solution>
+<cvss3_base_score>6.5</cvss3_base_score>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 57582 on port 5432/tcp</plugin_output>
+</ReportItem>
+</ReportHost>
+<ReportHost name="192.168.56.102"><HostProperties>
+<tag name="HOST_START">Mon Nov 23 10:00:00 2026</tag>
+<tag name="host-ip">192.168.56.102</tag>
+<tag name="host-fqdn">win10-lab.lab.local</tag>
+<tag name="operating-system">Microsoft Windows 10 Enterprise Evaluation Build 14393</tag>
+<tag name="Credentialed_Scan">false</tag>
+</HostProperties>
+<ReportItem port="0" svc_name="general" protocol="tcp" severity="0" pluginID="19506" pluginName="Nessus Scan Information" pluginFamily="Settings"><plugin_output>SYNTHETIC</plugin_output></ReportItem>
+<ReportItem port="3389" svc_name="msrdp" protocol="tcp" severity="2" pluginID="58453" pluginName="Terminal Services Doesn't Use Network Level Authentication (NLA) Only" pluginFamily="Misc.">
+<risk_factor>Medium</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - Terminal Services Doesn't Use Network Level Authentication (NLA) Only detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for Terminal Services Doesn't Use Network Level Authentication (NLA) Only.</description>
+<solution>Enable Network Level Authentication (NLA) on the remote RDP server.</solution>
+<cvss3_base_score>4.0</cvss3_base_score>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 58453 on port 3389/tcp</plugin_output>
+</ReportItem>
+<ReportItem port="3389" svc_name="msrdp" protocol="tcp" severity="2" pluginID="57690" pluginName="Terminal Services Encryption Level is Medium or Low" pluginFamily="Misc.">
+<risk_factor>Medium</risk_factor>
+<synopsis>SYNTHETIC TEST DATA - Terminal Services Encryption Level is Medium or Low detected.</synopsis>
+<description>SYNTHETIC TEST DATA. Example description for Terminal Services Encryption Level is Medium or Low.</description>
+<solution>Change RDP encryption level to High or FIPS-Compliant.</solution>
+<cvss3_base_score>5.9</cvss3_base_score>
+<exploit_available>false</exploit_available>
+<plugin_output>SYNTHETIC: example plugin output for 57690 on port 3389/tcp</plugin_output>
+</ReportItem>
+</ReportHost>
+</Report>
+</NessusClientData_v2>
