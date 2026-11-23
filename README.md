@@ -11,7 +11,7 @@ I build hands-on security labs and tools focused on **SIEM operations**, **threa
 
 - 💼 PC Technician @ UPMC (Contract via All Lines Technology) — Active Directory, GPO management, endpoint lifecycle across 4+ healthcare sites
 - 🎓 B.S. Cybersecurity Analytics and Operations — Penn State University, 2026
-- 📜 CompTIA **Security+** (July 2024) | CompTIA **CySA+** (Expected August 2026)
+- 📜 CompTIA **Security+** (July 2024) | CompTIA **CySA+** (September 2026) | Microsoft **SC-200** (Expected January 2027)
 - 🔭 Currently building more detection labs and sharpening SPL/KQL query skills
 - 🌐 Connect: [LinkedIn](https://linkedin.com/in/howardwu35) | [Email](mailto:howardwu35@gmail.com)
 
