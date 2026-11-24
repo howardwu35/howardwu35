@@ -1,3 +1,0 @@
-ip,hostname,criticality,owner,description
-192.168.56.102,win10-lab.lab.local,high,Desktop Support,Windows endpoint (documented lab target) - edit IP to match your VM
-192.168.56.101,metasploitable.lab.local,high,Linux Admin Team,Optional Metasploitable 2 target

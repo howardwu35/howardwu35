@@ -1,5 +1,0 @@
-__pycache__/
-*.pyc
-output/
-known_exploited_vulnerabilities.csv
-.DS_Store
