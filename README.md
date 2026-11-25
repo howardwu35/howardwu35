@@ -47,5 +47,6 @@ I build hands-on security labs and tools focused on **SIEM operations**, **threa
 | Project | Description | Tools |
 |---|---|---|
 | [Splunk SIEM — Brute Force Detection Lab](https://github.com/howardwu35/Splunk-Lab) | Closed-loop SIEM lab detecting SMB brute-force attacks with custom SPL rules and dashboard | Splunk, Kali Linux, CrackMapExec |
+| [Nessus Vulnerability Management Lab](https://github.com/howardwu35/Nessus-Lab) | End-to-end vuln management on a Windows VM: credentialed scanning, risk-based prioritization (CVSS/VPR + CISA KEV), NIST 800-53 POA&M, remediation and rescan validation | Nessus Essentials, Python, NIST 800-53 |
 | [Virtual SIEM/SOC Honeynet](https://github.com/howardwu35/SIEM-Honeypot-Project) | Azure honeynet attracting real-world threat actors, mapped to MITRE ATT&CK | Microsoft Sentinel, Azure, Entra ID |
 | [Competitive Analysis Dashboard](https://github.com/howardwu35/Competitive-Analysis-Tool) | Full-stack risk dashboard using ALE/ARO/SLE models built during Commvault internship | React, FastAPI, Python |
